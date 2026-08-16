@@ -1,1164 +1,1305 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rvs-uitlaatopmaat.nl - configurator</title>
-
-<style>
-:root{
-  --bg:#444;
-  --dark:#1e1e1e;
-  --card:#505050;
-  --hover:#5b5b5b;
-  --selected:#303030;
-  --border:#777;
-  --white:#fff;
-  --text:#eee;
-  --muted:#ccc;
-  --green:#7bd957;
-  --gold:#d2b27c;
-  --warning:#3b3329;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  line-height:1.5;
-}
-
-.configurator{
-  max-width:1180px;
-  margin:auto;
-  padding:20px;
-}
-
-.header,
-.intro,
-.panel{
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:0 8px 22px rgba(0,0,0,.2);
-}
-
-.header{
-  display:flex;
-  align-items:center;
-  gap:22px;
-  padding:18px 24px;
-  margin-bottom:22px;
-  background:var(--dark);
-}
-
-.logo{
-  width:90px;
-  height:90px;
-  object-fit:contain;
-  background:#000;
-  border-radius:12px;
-}
-
-.header h1{
-  margin:0 0 5px;
-  color:#fff;
-  font-size:30px;
-  font-weight:400;
-}
-
-.header p{
-  margin:0;
-  color:var(--muted);
-}
-
-.intro{
-  padding:32px 22px;
-  margin-bottom:22px;
-  background:var(--dark);
-  text-align:center;
-}
-
-.intro h2{
-  margin:0 0 12px;
-  color:#fff;
-  font-size:30px;
-  font-weight:400;
-}
-
-.intro-text{
-  max-width:850px;
-  margin:auto;
-}
-
-.warning{
-  max-width:900px;
-  margin:20px auto 0;
-  padding:15px 17px;
-  background:var(--warning);
-  border:1px solid var(--gold);
-  border-radius:12px;
-  color:#fff1d6;
-  font-size:14px;
-  text-align:left;
-}
-
-.warning strong{
-  color:#f3cf8a;
-}
-
-.benefits{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px 28px;
-  margin-top:22px;
-}
-
-.benefit:before{
-  content:"✓";
-  margin-right:7px;
-  color:var(--green);
-  font-weight:bold;
-}
-
-.layout{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 350px;
-  gap:22px;
-  align-items:start;
-}
-
-.panel{
-  padding:25px;
-  background:var(--bg);
-}
-
-.panel h2{
-  margin:0 0 22px;
-  color:#fff;
-  font-size:25px;
-  font-weight:400;
-}
-
-.group{
-  margin-bottom:30px;
-}
-
-.group h3{
-  margin:0 0 5px;
-  color:#fff;
-  font-size:20px;
-  font-weight:400;
-}
-
-.group-help{
-  margin:0 0 12px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.option{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:15px;
-  margin:8px 0;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:13px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.option:hover{
-  background:var(--hover);
-  border-color:#aaa;
-}
-
-.option.selected{
-  background:var(--selected);
-  border-color:var(--green);
-  box-shadow:0 0 0 1px rgba(123,217,87,.25);
-}
-
-.option.selected .option-name{
-  color:var(--green);
-}
-
-.option input{
-  width:18px;
-  height:18px;
-  margin-top:3px;
-  accent-color:var(--green);
-  flex-shrink:0;
-  cursor:pointer;
-}
-
-.option-info{
-  flex:1;
-}
-
-.option-name{
-  display:block;
-  color:#fff;
-  font-weight:bold;
-}
-
-.option-description{
-  display:block;
-  margin-top:4px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.option-price{
-  display:block;
-  margin-top:7px;
-  color:#fff;
-  font-weight:bold;
-}
-
-.number-box{
-  margin:10px 0 15px;
-  padding:15px;
-  background:#202020;
-  border:1px solid var(--green);
-  border-radius:10px;
-}
-
-.number-box label{
-  display:block;
-  margin-bottom:8px;
-  color:#fff;
-  font-weight:bold;
-}
-
-.number-box input{
-  width:120px;
-  height:45px;
-  padding:10px;
-  background:#444;
-  color:#fff;
-  border:1px solid var(--green);
-  border-radius:8px;
-  font-size:18px;
-}
-
-.summary{
-  position:sticky;
-  top:20px;
-  background:var(--dark);
-}
-
-.summary-intro{
-  margin:-10px 0 18px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.summary-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  padding:9px 0;
-  border-bottom:1px solid #666;
-  font-size:14px;
-}
-
-.summary-row span:last-child{
-  white-space:nowrap;
-  color:#fff;
-}
-
-.subrow{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.total{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-top:20px;
-  padding-top:17px;
-  border-top:2px solid #fff;
-  color:#fff;
-  font-size:20px;
-  font-weight:bold;
-}
-
-.total small{
-  display:block;
-  color:var(--gold);
-  font-size:11px;
-  font-weight:normal;
-  text-align:right;
-}
-
-.full{
-  grid-column:1/-1;
-}
-
-.info-columns,
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-
-.info-box{
-  padding:18px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-
-.info-box h3{
-  margin:0 0 10px;
-  color:#fff;
-  font-size:18px;
-  font-weight:400;
-}
-
-.info-box ul{
-  margin:0;
-  padding-left:20px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.included h3:before{
-  content:"✓";
-  margin-right:7px;
-  color:var(--green);
-}
-
-.not-included h3:before{
-  content:"!";
-  margin-right:8px;
-  color:#e2a0a0;
-}
-
-.field.full-width{
-  grid-column:1/-1;
-}
-
-.field label{
-  display:block;
-  margin-bottom:6px;
-  color:#fff;
-}
-
-.field input,
-.field textarea{
-  width:100%;
-  padding:13px;
-  background:var(--dark);
-  color:#fff;
-  border:1px solid var(--border);
-  border-radius:10px;
-  font:inherit;
-}
-
-.field textarea{
-  min-height:110px;
-  resize:vertical;
-}
-
-.button,
-.mail-link,
-.contact-link{
-  display:inline-block;
-  margin-top:20px;
-  padding:13px 25px;
-  border-radius:25px;
-  text-decoration:none;
-  cursor:pointer;
-  font-size:16px;
-}
-
-.button{
-  border:0;
-  background:#202020;
-  color:#fff;
-}
-
-.button:hover,
-.mail-link:hover{
-  background:#111;
-}
-
-.mail-link{
-  background:var(--green);
-  color:#172017;
-  font-weight:bold;
-}
-
-.contact-link{
-  background:#fff;
-  color:#333;
-}
-
-#message{
-  color:var(--green);
-  font-weight:bold;
-}
-
-.footer{
-  margin:30px 0;
-  padding-top:20px;
-  border-top:1px solid #777;
-  color:var(--muted);
-  text-align:center;
-  font-size:14px;
-}
-
-@media(max-width:850px){
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .summary{
-    position:static;
-  }
-}
-
-@media(max-width:600px){
-  .configurator{
-    padding:10px;
-  }
-
-  .header{
-    padding:15px;
-    gap:15px;
-  }
-
-  .logo{
-    width:70px;
-    height:70px;
-  }
-
-  .header h1{
-    font-size:21px;
-  }
-
-  .panel{
-    padding:17px;
-  }
-
-  .info-columns,
-  .form-grid{
-    grid-template-columns:1fr;
-  }
-
-  .field.full-width{
-    grid-column:auto;
-  }
-
-  .option{
-    padding:14px 12px;
-  }
-
-  .button,
-  .mail-link,
-  .contact-link{
-    width:100%;
-    text-align:center;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rvs-uitlaatopmaat.nl - configurator</title>
+
+  <style>
+    :root {
+      --bg: #444;
+      --dark: #1e1e1e;
+      --card: #505050;
+      --hover: #5b5b5b;
+      --selected: #303030;
+      --border: #777;
+      --white: #fff;
+      --text: #eee;
+      --muted: #ccc;
+      --green: #7bd957;
+      --gold: #d2b27c;
+      --warning: #3b3329;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    .configurator {
+      width: 100%;
+      max-width: 1180px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header,
+    .intro,
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .2);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 18px 24px;
+      margin-bottom: 22px;
+      background: var(--dark);
+    }
+
+    .logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      background: #000;
+      border-radius: 12px;
+    }
+
+    .header h1 {
+      margin: 0 0 5px;
+      color: var(--white);
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .header p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .intro {
+      padding: 32px 22px;
+      margin-bottom: 22px;
+      background: var(--dark);
+      text-align: center;
+    }
+
+    .intro h2,
+    .panel h2 {
+      color: var(--white);
+      font-weight: 400;
+    }
+
+    .intro h2 {
+      margin: 0 0 12px;
+      font-size: 30px;
+    }
+
+    .intro-text {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .warning {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 15px 17px;
+      background: var(--warning);
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      color: #fff1d6;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .warning strong {
+      color: #f3cf8a;
+    }
+
+    .benefits {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 28px;
+      margin-top: 22px;
+    }
+
+    .benefit::before {
+      content: "✓";
+      margin-right: 7px;
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 25px;
+      background: var(--bg);
+    }
+
+    .panel h2 {
+      margin: 0 0 22px;
+      font-size: 25px;
+    }
+
+    .group {
+      margin-bottom: 30px;
+    }
+
+    .group h3 {
+      margin: 0 0 5px;
+      color: var(--white);
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .group-help {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px;
+      margin: 8px 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .option:hover {
+      background: var(--hover);
+      border-color: #aaa;
+    }
+
+    .option.selected {
+      background: var(--selected);
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px rgba(123, 217, 87, .25);
+    }
+
+    .option.selected .option-name {
+      color: var(--green);
+    }
+
+    .option input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--green);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .option-info {
+      flex: 1;
+    }
+
+    .option-name {
+      display: block;
+      color: var(--white);
+      font-weight: bold;
+    }
+
+    .option-description {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .option-price {
+      display: block;
+      margin-top: 7px;
+      color: var(--white);
+      font-weight: bold;
+    }
+
+    .number-box {
+      margin: 10px 0 15px;
+      padding: 15px;
+      background: var(--dark);
+      border: 1px solid var(--green);
+      border-radius: 10px;
+    }
+
+    .number-box label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--white);
+      font-weight: bold;
+    }
+
+    .number-box input {
+      width: 120px;
+      height: 45px;
+      padding: 10px;
+      background: var(--bg);
+      color: var(--white);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .summary {
+      position: sticky;
+      top: 20px;
+      background: var(--dark);
+    }
+
+    .summary-intro {
+      margin: -10px 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #666;
+      font-size: 14px;
+    }
+
+    .summary-row span:last-child {
+      white-space: nowrap;
+      color: var(--white);
+    }
+
+    .subrow {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 17px;
+      border-top: 2px solid var(--white);
+      color: var(--white);
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .total small {
+      display: block;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: normal;
+      text-align: right;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .info-columns,
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-box {
+      padding: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .info-box h3 {
+      margin: 0 0 10px;
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    .info-box ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .included h3::before {
+      content: "✓";
+      margin-right: 7px;
+      color: var(--green);
+    }
+
+    .not-included h3::before {
+      content: "!";
+      margin-right: 8px;
+      color: #e2a0a0;
+    }
+
+    .field.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 13px;
+      background: var(--dark);
+      color: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .button,
+    .mail-link,
+    .contact-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 13px 25px;
+      border-radius: 25px;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button {
+      border: 0;
+      background: #202020;
+      color: var(--white);
+    }
+
+    .mail-link {
+      background: var(--green);
+      color: #172017;
+      font-weight: bold;
+    }
+
+    .contact-link {
+      background: var(--white);
+      color: #333;
+    }
+
+    .button:hover {
+      background: #111;
+    }
+
+    #message {
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    .footer {
+      margin: 30px 0;
+      padding-top: 20px;
+      border-top: 1px solid #777;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .configurator {
+        padding: 10px;
+      }
+
+      .header {
+        padding: 15px;
+        gap: 15px;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .panel {
+        padding: 17px;
+      }
+
+      .info-columns,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full-width {
+        grid-column: auto;
+      }
+
+      .option,
+      .button,
+      .mail-link,
+      .contact-link {
+        width: 100%;
+      }
+
+      .button,
+      .mail-link,
+      .contact-link {
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <main class="configurator">
 
-<header class="header">
-  <img src="logo.png" class="logo" alt="logo rvs-uitlaatopmaat.nl">
+  <header class="header">
+    <img
+      src="logo.png"
+      class="logo"
+      alt="logo rvs-uitlaatopmaat.nl"
+    >
 
-  <div>
-    <h1>rvs-uitlaatopmaat.nl</h1>
-    <p>Uw specialist in hoogwaardige RVS uitlaatsystemen</p>
-  </div>
-</header>
+    <div>
+      <h1>rvs-uitlaatopmaat.nl</h1>
+      <p>Uw specialist in hoogwaardige RVS uitlaatsystemen</p>
+    </div>
+  </header>
 
-<section class="intro">
-  <h2>Stel uw RVS-uitlaatsysteem samen</h2>
+  <section class="intro">
+    <h2>Stel uw RVS-uitlaatsysteem samen</h2>
 
-  <p class="intro-text">
-    Kies hieronder de gewenste uitvoering. Alle bedragen zijn circa- en
-    vanafprijzen. Na uw aanvraag nemen wij contact met u op voor een
-    definitieve beoordeling.
-  </p>
+    <p class="intro-text">
+      Kies hieronder de gewenste uitvoering. Alle bedragen zijn circa- en
+      vanafprijzen. Na uw aanvraag nemen wij contact met u op voor een
+      definitieve beoordeling.
+    </p>
 
-  <div class="warning">
-    <strong>Let op:</strong>
-    Alle genoemde bedragen zijn circa- en vanafprijzen en vormen geen
-    definitieve offerte. Afbrekende bouten en moeren, flexibele delen en
-    klemmen zijn niet inbegrepen. Eventuele extra kosten worden aan het
-    einde van de klus berekend.
-  </div>
-
-  <div class="benefits">
-    <span class="benefit">Hoogwaardig RVS 304 roestvrijstaal.</span>
-    <span class="benefit">100% maatwerk.</span>
-    <span class="benefit">Professionele montage.</span>
-    <span class="benefit">Perfecte pasvorm.</span>
-  </div>
-</section>
-
-<section class="layout">
-
-<div class="panel">
-  <h2>Configureer uw uitlaatsysteem</h2>
-  <div id="choices"></div>
-</div>
-
-<aside class="panel summary">
-  <h2>Uw samenstelling</h2>
-  <p class="summary-intro">Indicatie van uw gekozen uitvoering.</p>
-
-  <div id="summary">
-    <p>Kies hierboven eerst een uitvoering.</p>
-  </div>
-
-  <div class="total">
-    <span>Indicatief totaal</span>
-    <span>
-      <small>circa / vanaf</small>
-      <span id="totalPrice">€ 0,00</span>
-    </span>
-  </div>
-</aside>
-
-<section class="panel full">
-  <h2>Wat is wel en niet inbegrepen?</h2>
-
-  <div class="info-columns">
-    <div class="info-box included">
-      <h3>Wel inbegrepen</h3>
-      <ul>
-        <li>De gekozen uitlaataanpassing.</li>
-        <li>Werkzaamheden volgens de configuratie.</li>
-        <li>Hoogwaardig RVS-materiaal waar van toepassing.</li>
-        <li>Professioneel maatwerk.</li>
-        <li>Beoordeling van het voertuig vooraf.</li>
-      </ul>
+    <div class="warning">
+      <strong>Let op:</strong>
+      Alle genoemde bedragen zijn circa- en vanafprijzen en vormen geen
+      definitieve offerte. Afbrekende bouten en moeren, flexibele delen en
+      klemmen zijn niet inbegrepen. Eventuele extra kosten worden aan het
+      einde van de klus berekend.
     </div>
 
-    <div class="info-box not-included">
-      <h3>Niet inbegrepen</h3>
-      <ul>
-        <li>Afbrekende of vastzittende bouten en moeren.</li>
-        <li>Flexibele delen.</li>
-        <li>Klemmen en extra bevestigingsmateriaal.</li>
-        <li>Onvoorziene reparaties of extra werkzaamheden.</li>
-        <li>Extra kosten aan het einde van de klus.</li>
-      </ul>
+    <div class="benefits">
+      <span class="benefit">Hoogwaardig RVS 304 roestvrijstaal.</span>
+      <span class="benefit">100% maatwerk.</span>
+      <span class="benefit">Professionele montage.</span>
+      <span class="benefit">Perfecte pasvorm.</span>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="panel full">
-  <h2>Offerte aanvragen</h2>
+  <section class="layout">
 
-  <p>
-    Vul hieronder uw gegevens in. De configuratie wordt meegestuurd naar
-    <strong>info@rvs-uitlaatopmaat.nl</strong>.
-  </p>
-
-  <div class="warning">
-    <strong>Prijsinformatie:</strong>
-    De definitieve prijs wordt bepaald na beoordeling van het voertuig en de
-    staat van het bestaande uitlaatsysteem.
-  </div>
-
-  <form id="quoteForm">
-    <div class="form-grid">
-
-      <div class="field">
-        <label for="name">Naam *</label>
-        <input id="name" type="text" required autocomplete="name">
-      </div>
-
-      <div class="field">
-        <label for="email">E-mailadres *</label>
-        <input id="email" type="email" required autocomplete="email">
-      </div>
-
-      <div class="field">
-        <label for="phone">Telefoonnummer *</label>
-        <input id="phone" type="tel" required autocomplete="tel">
-      </div>
-
-      <div class="field">
-        <label for="car">Merk / model auto *</label>
-        <input id="car" type="text" required placeholder="Bijvoorbeeld BMW 335i">
-      </div>
-
-      <div class="field">
-        <label for="year">Bouwjaar auto *</label>
-        <input id="year" type="number" min="1900" max="2100" required>
-      </div>
-
-      <div class="field">
-        <label for="license">Kenteken *</label>
-        <input id="license" type="text" required placeholder="Bijvoorbeeld AB-12-CD">
-      </div>
-
-      <div class="field full-width">
-        <label for="comment">Opmerking</label>
-        <textarea id="comment" placeholder="Heeft u aanvullende wensen?"></textarea>
-      </div>
-
+    <div class="panel">
+      <h2>Configureer uw uitlaatsysteem</h2>
+      <div id="choices"></div>
     </div>
 
-    <button class="button" type="submit">
-      Offerte aanvragen
-    </button>
+    <aside class="panel summary">
+      <h2>Uw samenstelling</h2>
 
-    <div id="message"></div>
-  </form>
-</section>
+      <p class="summary-intro">
+        Indicatie van uw gekozen uitvoering.
+      </p>
 
-</section>
+      <div id="summary">
+        <p>Kies hierboven eerst een uitvoering.</p>
+      </div>
 
-<footer class="footer">
-  rvs-uitlaatopmaat.nl · info@rvs-uitlaatopmaat.nl
-</footer>
+      <div class="total">
+        <span>Indicatief totaal</span>
+
+        <span>
+          <small>circa / vanaf</small>
+          <span id="totalPrice">€ 0,00</span>
+        </span>
+      </div>
+    </aside>
+
+    <section class="panel full">
+      <h2>Wat is wel en niet inbegrepen?</h2>
+
+      <div class="info-columns">
+
+        <div class="info-box included">
+          <h3>Wel inbegrepen</h3>
+          <ul>
+            <li>De gekozen uitlaataanpassing.</li>
+            <li>Werkzaamheden volgens de configuratie.</li>
+            <li>Hoogwaardig RVS-materiaal waar van toepassing.</li>
+            <li>Professioneel maatwerk.</li>
+            <li>Beoordeling van het voertuig vooraf.</li>
+          </ul>
+        </div>
+
+        <div class="info-box not-included">
+          <h3>Niet inbegrepen</h3>
+          <ul>
+            <li>Afbrekende of vastzittende bouten en moeren.</li>
+            <li>Flexibele delen.</li>
+            <li>Klemmen en extra bevestigingsmateriaal.</li>
+            <li>Onvoorziene reparaties of extra werkzaamheden.</li>
+            <li>Extra kosten aan het einde van de klus.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="panel full">
+      <h2>Offerte aanvragen</h2>
+
+      <p>
+        Vul hieronder uw gegevens in. De configuratie wordt meegestuurd naar
+        <strong>info@rvs-uitlaatopmaat.nl</strong>.
+      </p>
+
+      <div class="warning">
+        <strong>Prijsinformatie:</strong>
+        De definitieve prijs wordt bepaald na beoordeling van het voertuig en
+        de staat van het bestaande uitlaatsysteem.
+      </div>
+
+      <form id="quoteForm">
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="name">Naam *</label>
+            <input type="text" id="name" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="email">E-mailadres *</label>
+            <input type="email" id="email" required autocomplete="email">
+          </div>
+
+          <div class="field">
+            <label for="phone">Telefoonnummer *</label>
+            <input type="tel" id="phone" required autocomplete="tel">
+          </div>
+
+          <div class="field">
+            <label for="license">Kenteken *</label>
+            <input type="text" id="license" required placeholder="Bijvoorbeeld AB-12-CD">
+          </div>
+
+          <div class="field full-width">
+            <label for="comment">Opmerking</label>
+            <textarea id="comment" placeholder="Heeft u aanvullende wensen?"></textarea>
+          </div>
+
+        </div>
+
+        <button class="button" type="submit">
+          Offerte aanvragen
+        </button>
+
+        <div id="message"></div>
+      </form>
+    </section>
+
+  </section>
+
+  <footer class="footer">
+    rvs-uitlaatopmaat.nl · info@rvs-uitlaatopmaat.nl
+  </footer>
 
 </main>
 
 <script>
-const CONFIG = {
-  email: "info@rvs-uitlaatopmaat.nl",
+  const CONFIG = {
+    email: "info@rvs-uitlaatopmaat.nl",
 
-  /*
-    Vul hier eventueel de echte URL van je JouwWeb-contactformulier in.
-  */
-  contactUrl: "https://www.rvs-uitlaatopmaat.nl/contact",
+    /*
+      Pas deze URL aan naar de echte contactpagina van jouw website.
+    */
+    contactUrl: "https://www.rvs-uitlaatopmaat.nl/contact",
 
-  groups: [
-    {
-      id:"existing",
-      title:"Bestaande uitlaat",
-      help:"Vink dit aan wanneer de bestaande uitlaat aangepast moet worden.",
-      type:"checkbox",
-      options:[
-        {
-          name:"Bestaande uitlaat aanpassen",
-          description:"De bestaande uitlaat moet worden aangepast.",
-          price:0
-        }
-      ]
-    },
+    groups: [
 
-    {
-      id:"system",
-      title:"Type uitlaatsysteem",
-      help:"Kies een type uitlaatsysteem. Deze keuze verdwijnt bij bestaande uitlaat aanpassen.",
-      type:"radio",
-      options:[
-        {name:"Enkel",description:"Enkel uitlaatsysteem.",price:1050},
-        {name:"Enkel dubbel",description:"Van enkel naar een dubbele uitvoering.",price:1450},
-        {name:"Dubbel dubbel",description:"Dubbele uitvoering met dubbele einddempers.",price:1850},
-        {name:"Dubbel dubbel met balansdeel",description:"Dubbele uitvoering met balansdeel.",price:1950},
-        {name:"Enkel dubbel gevoed",description:"Enkele aansluiting naar een dubbel gevoed systeem.",price:1250},
-        {name:"Dubbel enkel gevoed",description:"Dubbele uitvoering met enkele voeding.",price:1350},
-        {name:"Enkel ombouw naar dubbel",description:"Ombouw van enkel naar dubbel.",price:1550},
-        {name:"Enkel dwars enkel",description:"Enkele dwars geplaatste uitvoering.",price:1000},
-        {name:"Enkel dwars dubbel",description:"Dubbele dwars geplaatste uitvoering.",price:1350}
-      ]
-    },
+      {
+        id: "existing",
+        title: "Bestaande uitlaat",
+        help: "Vink dit aan wanneer de bestaande uitlaat aangepast moet worden.",
+        type: "checkbox",
 
-    {
-      id:"doubleExtras",
-      title:"Extra opties bij dubbel dubbel",
-      help:"Beschikbaar wanneer dubbel dubbel is gekozen.",
-      type:"checkbox",
-      visibleWhen:{group:"system",option:2},
-      options:[
-        {
-          name:"X-pipe toevoegen",
-          description:"X-pipe voor dubbel dubbel.",
-          price:650
+        options: [
+          {
+            name: "Bestaande uitlaat aanpassen",
+            description: "De bestaande uitlaat moet worden aangepast.",
+            price: 0
+          }
+        ]
+      },
+
+      {
+        id: "system",
+        title: "Type uitlaatsysteem",
+        help: "Kies een type uitlaatsysteem. Deze groep verdwijnt bij bestaande uitlaat aanpassen.",
+        type: "radio",
+
+        options: [
+          {
+            name: "Enkel",
+            description: "Enkel uitlaatsysteem.",
+            price: 1050
+          },
+          {
+            name: "Enkel dubbel",
+            description: "Van enkel naar een dubbele uitvoering.",
+            price: 1450
+          },
+          {
+            name: "Dubbel dubbel",
+            description: "Dubbele uitvoering met dubbele einddempers.",
+            price: 1850
+          },
+          {
+            name: "Dubbel dubbel met balansdeel",
+            description: "Dubbele uitvoering met balansdeel.",
+            price: 1950
+          },
+          {
+            name: "Enkel dubbel gevoed",
+            description: "Enkele aansluiting naar een dubbel gevoed systeem.",
+            price: 1250
+          },
+          {
+            name: "Dubbel enkel gevoed",
+            description: "Dubbele uitvoering met enkele voeding.",
+            price: 1350
+          },
+          {
+            name: "Enkel ombouw naar dubbel",
+            description: "Ombouw van enkel naar dubbel.",
+            price: 1550
+          },
+          {
+            name: "Enkel dwars enkel",
+            description: "Enkele dwars geplaatste uitvoering.",
+            price: 1000
+          },
+          {
+            name: "Enkel dwars dubbel",
+            description: "Dubbele dwars geplaatste uitvoering.",
+            price: 1350
+          }
+        ]
+      },
+
+      {
+        id: "doubleExtras",
+        title: "Extra opties bij dubbel dubbel",
+        help: "Beschikbaar wanneer dubbel dubbel is gekozen.",
+        type: "checkbox",
+
+        visibleWhen: {
+          group: "system",
+          option: 2
         },
-        {
-          name:"Twee kleppendempers installeren",
-          description:"Automatisch twee kleppendempers.",
-          price:1500
-        }
-      ]
-    },
 
-    {
-      id:"adjustments",
-      title:"Aanpassingen aan bestaande uitlaat",
-      help:"U kunt één of meerdere aanpassingen selecteren.",
-      type:"checkbox",
-      visibleWhen:{group:"existing",option:0},
-      options:[
-        {name:"Enkele cut-out bestaand",description:"Aanpassing met één bestaande cut-out.",price:550},
-        {name:"Dubbele cut-out bestaand",description:"Aanpassing met een dubbele cut-out.",price:930},
-        {name:"Klepdemper installeren",description:"Installatie van één klepdemper.",price:750},
-        {name:"X-pipe",description:"X-pipe voor betere verdeling van uitlaatstromen.",price:650},
-        {name:"Midden demper delete enkel",description:"Verwijderen van één middendemper.",price:200},
-        {name:"Midden demper delete dubbel",description:"Verwijderen van dubbele middendempers.",price:350},
-        {name:"Einddemper delete enkel",description:"Uitsparing blijft beschikbaar.",price:250,endDelete:true},
-        {name:"Einddemper delete dubbel",description:"Uitsparing blijft beschikbaar.",price:450,endDelete:true},
-        {name:"Bypass klepsysteem",description:"Bypass voor het bestaande klepsysteem.",price:650},
-        {name:"Geen van het bovenstaande",description:"Geen van deze aanpassingen.",price:0}
-      ]
-    },
+        options: [
+          {
+            name: "X-pipe toevoegen",
+            description: "X-pipe voor dubbel dubbel.",
+            price: 650
+          },
+          {
+            name: "Twee kleppendempers installeren",
+            description: "Automatisch twee kleppendempers.",
+            price: 1500
+          }
+        ]
+      },
 
-    {
-      id:"diameter",
-      title:"Gewenste diameter",
-      help:"Indien u de diameter niet weet, kies dan de middelste optie.",
-      type:"radio",
-      options:[
-        {name:"2 inch of kleiner (50,8 mm)",description:"Meerprijs circa/vanaf €85.",price:85},
-        {name:"2,25 inch (57 mm) tot 2,5 inch (63,5 mm)",description:"Meerprijs circa/vanaf €105.",price:105},
-        {name:"2,75 inch (70 mm) tot 3 inch (76,2 mm)",description:"Meerprijs circa/vanaf €200.",price:200}
-      ]
-    },
+      {
+        id: "adjustments",
+        title: "Aanpassingen aan bestaande uitlaat",
+        help: "U kunt één of meerdere aanpassingen selecteren.",
+        type: "checkbox",
 
-    {
-      id:"cutouts",
-      title:"Uitsparingen",
-      help:"Moeten er aanpassingen of uitsparingen worden gemaakt?",
-      type:"radio",
-      options:[
-        {
-          name:"Nee, de bestaande uitsparing is geschikt",
-          description:"Er hoeven geen extra uitsparingen gemaakt te worden.",
-          price:0
+        visibleWhen: {
+          group: "existing",
+          option: 0
         },
-        {
-          name:"Ja, er moeten uitsparingen gemaakt worden",
-          description:"€95 per uitsparing.",
-          price:95,
-          perCutout:true
-        }
-      ]
-    },
 
-    {
-      id:"sound",
-      title:"Schakelen tussen geluid",
-      help:"Wilt u kunnen schakelen tussen sportief en rustig geluid?",
-      type:"radio",
-      options:[
-        {
-          name:"Ja, ik wil kunnen schakelen tussen sportief en rustig geluid",
-          description:"Meerprijs circa/vanaf €380 per demper.",
-          price:380
-        },
-        {
-          name:"Nee, ik wil niet kunnen schakelen tussen sportief en rustig geluid",
-          description:"Geen kleppenbesturing.",
-          price:0
-        }
-      ]
+        options: [
+          {
+            name: "Enkele cut-out bestaand",
+            description: "Aanpassing met één bestaande cut-out.",
+            price: 550
+          },
+          {
+            name: "Dubbele cut-out bestaand",
+            description: "Aanpassing met een dubbele cut-out.",
+            price: 930
+          },
+          {
+            name: "Klepdemper installeren",
+            description: "Installatie van één klepdemper.",
+            price: 750
+          },
+          {
+            name: "X-pipe",
+            description: "X-pipe voor betere verdeling van uitlaatstromen.",
+            price: 650
+          },
+          {
+            name: "Midden demper delete enkel",
+            description: "Verwijderen van één middendemper.",
+            price: 200
+          },
+          {
+            name: "Midden demper delete dubbel",
+            description: "Verwijderen van dubbele middendempers.",
+            price: 350
+          },
+          {
+            name: "Einddemper delete enkel",
+            description: "Uitsparing blijft beschikbaar.",
+            price: 250,
+            endDelete: true
+          },
+          {
+            name: "Einddemper delete dubbel",
+            description: "Uitsparing blijft beschikbaar.",
+            price: 450,
+            endDelete: true
+          },
+          {
+            name: "Bypass klepsysteem",
+            description: "Bypass voor het bestaande klepsysteem.",
+            price: 650
+          },
+          {
+            name: "Geen van het bovenstaande",
+            description: "Geen van deze aanpassingen.",
+            price: 0
+          }
+        ]
+      },
+
+      {
+        id: "diameter",
+        title: "Gewenste diameter",
+        help: "Indien u de diameter niet weet, kies dan de middelste optie.",
+        type: "radio",
+
+        options: [
+          {
+            name: "2 inch of kleiner (50,8 mm)",
+            description: "Meerprijs circa/vanaf €85.",
+            price: 85
+          },
+          {
+            name: "2,25 inch (57 mm) tot 2,5 inch (63,5 mm)",
+            description: "Meerprijs circa/vanaf €105.",
+            price: 105
+          },
+          {
+            name: "2,75 inch (70 mm) tot 3 inch (76,2 mm)",
+            description: "Meerprijs circa/vanaf €200.",
+            price: 200
+          }
+        ]
+      },
+
+      {
+        id: "cutouts",
+        title: "Uitsparingen",
+        help: "Moeten er aanpassingen of uitsparingen worden gemaakt?",
+        type: "radio",
+
+        options: [
+          {
+            name: "Nee, de bestaande uitsparing is geschikt",
+            description: "Er hoeven geen extra uitsparingen gemaakt te worden.",
+            price: 0
+          },
+          {
+            name: "Ja, er moeten uitsparingen gemaakt worden",
+            description: "€95 per uitsparing.",
+            price: 95,
+            perCutout: true
+          }
+        ]
+      },
+
+      {
+        id: "sound",
+        title: "Schakelen tussen geluid",
+        help: "Wilt u kunnen schakelen tussen sportief en rustig geluid?",
+        type: "radio",
+
+        options: [
+          {
+            name: "Ja, ik wil kunnen schakelen tussen sportief en rustig geluid",
+            description: "Meerprijs circa/vanaf €380 per demper.",
+            price: 380
+          },
+          {
+            name: "Nee, ik wil niet kunnen schakelen tussen sportief en rustig geluid",
+            description: "Geen kleppenbesturing.",
+            price: 0
+          }
+        ]
+      }
+    ]
+  };
+
+  let selected = {};
+  let cutoutCount = 1;
+
+  function euro(value) {
+    return Number(value).toLocaleString("nl-NL", {
+      style: "currency",
+      currency: "EUR"
+    });
+  }
+
+  function safe(value) {
+    const div = document.createElement("div");
+    div.textContent = value || "";
+    return div.innerHTML;
+  }
+
+  function getGroup(id) {
+    return CONFIG.groups.find(group => group.id === id);
+  }
+
+  function init() {
+    CONFIG.groups.forEach(group => {
+      selected[group.id] =
+        group.type === "checkbox" ? [] : null;
+    });
+  }
+
+  function existingChosen() {
+    return selected.existing.includes(0);
+  }
+
+  function systemChosen() {
+    return selected.system !== null;
+  }
+
+  function adjustmentChosen() {
+    return selected.adjustments.length > 0;
+  }
+
+  function endDeleteChosen() {
+    return selected.adjustments.some(index => {
+      const option = getGroup("adjustments").options[index];
+      return option && option.endDelete === true;
+    });
+  }
+
+  function optionPrice(option) {
+    if (option.perCutout) {
+      return Number(option.price) * cutoutCount;
     }
-  ]
-};
 
-let selected = {};
-let cutoutCount = 1;
+    return Number(option.price) || 0;
+  }
 
-function euro(value){
-  return Number(value).toLocaleString("nl-NL",{
-    style:"currency",
-    currency:"EUR"
-  });
-}
+  function isVisible(group) {
+    /*
+      Bestaande uitlaat blijft zichtbaar.
+      Type uitlaatsysteem verdwijnt bij bestaande uitlaat aanpassen.
+    */
+    if (group.id === "existing") {
+      return true;
+    }
 
-function safe(value){
-  const div=document.createElement("div");
-  div.textContent=value || "";
-  return div.innerHTML;
-}
+    if (group.id === "system") {
+      return !existingChosen();
+    }
 
-function getGroup(id){
-  return CONFIG.groups.find(group=>group.id===id);
-}
+    if (group.id === "adjustments") {
+      return existingChosen();
+    }
 
-function init(){
-  CONFIG.groups.forEach(group=>{
-    selected[group.id]=group.type==="checkbox" ? [] : null;
-  });
-}
+    if (group.id === "doubleExtras") {
+      return selected.system === 2;
+    }
 
-function existingChosen(){
-  return selected.existing.includes(0);
-}
+    if (adjustmentChosen() && group.id === "diameter") {
+      return false;
+    }
 
-function systemChosen(){
-  return selected.system !== null;
-}
+    if (adjustmentChosen() && group.id === "sound") {
+      return false;
+    }
 
-function adjustmentChosen(){
-  return selected.adjustments.length>0;
-}
+    if (
+      adjustmentChosen() &&
+      group.id === "cutouts" &&
+      !endDeleteChosen()
+    ) {
+      return false;
+    }
 
-function endDeleteChosen(){
-  return selected.adjustments.some(index=>{
-    return getGroup("adjustments").options[index]?.endDelete === true;
-  });
-}
+    if (
+      ["diameter", "cutouts", "sound"].includes(group.id)
+    ) {
+      return systemChosen() || endDeleteChosen();
+    }
 
-function optionPrice(option){
-  return option.perCutout
-    ? Number(option.price) * cutoutCount
-    : Number(option.price) || 0;
-}
+    if (group.visibleWhen) {
+      const value = selected[group.visibleWhen.group];
 
-function isVisible(group){
-  /*
-    De groep bestaande uitlaat blijft zichtbaar.
-    Type uitlaatsysteem verdwijnt zodra bestaande uitlaat
-    wordt gekozen.
-  */
-  if(group.id==="existing"){
+      if (Array.isArray(value)) {
+        return value.includes(group.visibleWhen.option);
+      }
+
+      return value === group.visibleWhen.option;
+    }
+
     return true;
   }
 
-  if(group.id==="system"){
-    return !existingChosen();
-  }
-
-  if(group.id==="adjustments"){
-    return existingChosen();
-  }
-
-  if(group.id==="doubleExtras"){
-    return selected.system===2;
-  }
-
-  if(adjustmentChosen() && group.id==="diameter"){
-    return false;
-  }
-
-  if(adjustmentChosen() && group.id==="sound"){
-    return false;
-  }
-
-  if(
-    adjustmentChosen() &&
-    group.id==="cutouts" &&
-    !endDeleteChosen()
-  ){
-    return false;
-  }
-
-  if(["diameter","cutouts","sound"].includes(group.id)){
-    return systemChosen() || endDeleteChosen();
-  }
-
-  if(group.visibleWhen){
-    const value=selected[group.visibleWhen.group];
-
-    if(Array.isArray(value)){
-      return value.includes(group.visibleWhen.option);
+  function chosenOptions(group) {
+    if (group.type === "checkbox") {
+      return selected[group.id]
+        .map(index => group.options[index])
+        .filter(Boolean);
     }
 
-    return value===group.visibleWhen.option;
+    const option = group.options[selected[group.id]];
+    return option ? [option] : [];
   }
 
-  return true;
-}
+  function total() {
+    let amount = 0;
 
-function chosenOptions(group){
-  if(group.type==="checkbox"){
-    return selected[group.id]
-      .map(index=>group.options[index])
-      .filter(Boolean);
-  }
-
-  const option=group.options[selected[group.id]];
-  return option ? [option] : [];
-}
-
-function total(){
-  let amount=0;
-
-  CONFIG.groups.forEach(group=>{
-    if(!isVisible(group)) return;
-
-    chosenOptions(group).forEach(option=>{
-      amount+=optionPrice(option);
-    });
-  });
-
-  return amount;
-}
-
-function updateSelectedClasses(){
-  document.querySelectorAll("#choices .option").forEach(label=>{
-    const input=label.querySelector("input");
-
-    if(input && input.checked){
-      label.classList.add("selected");
-    }else{
-      label.classList.remove("selected");
-    }
-  });
-}
-
-function renderChoices(){
-  const container=document.getElementById("choices");
-  container.innerHTML="";
-
-  CONFIG.groups.forEach(group=>{
-    if(!isVisible(group)) return;
-
-    const section=document.createElement("section");
-    section.className="group";
-
-    section.innerHTML=`
-      <h3>${safe(group.title)}</h3>
-      <p class="group-help">${safe(group.help)}</p>
-    `;
-
-    group.options.forEach((option,index)=>{
-      const label=document.createElement("label");
-      label.className="option";
-
-      const input=document.createElement("input");
-      input.type=group.type;
-      input.name=group.type==="radio"
-        ? group.id
-        : `${group.id}-${index}`;
-
-      input.checked=group.type==="checkbox"
-        ? selected[group.id].includes(index)
-        : selected[group.id]===index;
-
-      const info=document.createElement("div");
-      info.className="option-info";
-
-      info.innerHTML=`
-        <span class="option-name">${safe(option.name)}</span>
-        <span class="option-description">${safe(option.description)}</span>
-        <span class="option-price">
-          ${
-            optionPrice(option)===0
-              ? "Geen meerprijs"
-              : "Circa / vanaf " + euro(optionPrice(option))
-          }
-        </span>
-      `;
-
-      label.append(input,info);
-      section.appendChild(label);
-
-      /*
-        Alleen bij de optie "Ja" wordt het aantalveld toegevoegd.
-      */
-      if(
-        group.id==="cutouts" &&
-        index===1 &&
-        input.checked
-      ){
-        const box=document.createElement("div");
-        box.className="number-box";
-
-        box.innerHTML=`
-          <label for="cutoutCount">
-            Hoeveel uitsparingen moeten er gemaakt worden? *
-          </label>
-
-          <input
-            id="cutoutCount"
-            type="number"
-            min="1"
-            step="1"
-            inputmode="numeric"
-            value="${cutoutCount}"
-            required
-          >
-        `;
-
-        /*
-          Belangrijk: bij het aanpassen van het aantal
-          wordt alleen de prijs bijgewerkt. De keuzes blijven staan.
-        */
-        box.querySelector("input").addEventListener("input",event=>{
-          cutoutCount=Math.max(
-            1,
-            parseInt(event.target.value,10) || 1
-          );
-
-          event.target.value=cutoutCount;
-          renderSummary();
-        });
-
-        section.appendChild(box);
+    CONFIG.groups.forEach(group => {
+      if (!isVisible(group)) {
+        return;
       }
 
-      input.addEventListener("change",()=>{
-        if(group.id==="existing" && input.checked){
-          selected.system=null;
-          selected.doubleExtras=[];
-        }
-
-        if(group.id==="system" && input.checked){
-          selected.existing=[];
-          selected.adjustments=[];
-        }
-
-        if(group.type==="checkbox"){
-          if(input.checked){
-            if(!selected[group.id].includes(index)){
-              selected[group.id].push(index);
-            }
-          }else{
-            selected[group.id]=selected[group.id]
-              .filter(value=>value!==index);
-
-            if(group.id==="existing"){
-              selected.adjustments=[];
-            }
-          }
-        }else{
-          selected[group.id]=index;
-
-          if(group.id==="cutouts" && index===0){
-            cutoutCount=1;
-          }
-        }
-
-        renderChoices();
-        renderSummary();
+      chosenOptions(group).forEach(option => {
+        amount += optionPrice(option);
       });
     });
 
-    container.appendChild(section);
-  });
-
-  updateSelectedClasses();
-}
-
-function renderSummary(){
-  const container=document.getElementById("summary");
-  let html="";
-
-  CONFIG.groups.forEach(group=>{
-    if(!isVisible(group)) return;
-
-    chosenOptions(group).forEach(option=>{
-      html+=`
-        <div class="summary-row">
-          <span>
-            ${safe(option.name)}
-
-            ${
-              option.perCutout
-                ? `<span class="subrow">${cutoutCount} uitsparing(en)</span>`
-                : ""
-            }
-          </span>
-
-          <span>
-            ${
-              optionPrice(option)===0
-                ? "€ 0,00"
-                : "Vanaf " + euro(optionPrice(option))
-            }
-          </span>
-        </div>
-      `;
-    });
-  });
-
-  if(!html){
-    html="<p>Kies hierboven eerst een uitvoering.</p>";
+    return amount;
   }
 
-  container.innerHTML=html;
-  document.getElementById("totalPrice").textContent=euro(total());
-}
+  function renderChoices() {
+    const container = document.getElementById("choices");
+    container.innerHTML = "";
 
-function configurationText(){
-  const lines=[];
-
-  CONFIG.groups.forEach(group=>{
-    if(!isVisible(group)) return;
-
-    chosenOptions(group).forEach(option=>{
-      lines.push(
-        `${group.title}: ${option.name} - circa/vanaf ${euro(optionPrice(option))}`
-      );
-
-      if(option.perCutout){
-        lines.push(`Aantal uitsparingen: ${cutoutCount}`);
+    CONFIG.groups.forEach(group => {
+      if (!isVisible(group)) {
+        return;
       }
+
+      const section = document.createElement("section");
+      section.className = "group";
+
+      section.innerHTML = `
+        <h3>${safe(group.title)}</h3>
+        <p class="group-help">${safe(group.help)}</p>
+      `;
+
+      group.options.forEach((option, index) => {
+        const label = document.createElement("label");
+        label.className = "option";
+
+        const input = document.createElement("input");
+        input.type = group.type;
+        input.name = group.type === "radio"
+          ? group.id
+          : `${group.id}-${index}`;
+
+        input.checked = group.type === "checkbox"
+          ? selected[group.id].includes(index)
+          : selected[group.id] === index;
+
+        if (input.checked) {
+          label.classList.add("selected");
+        }
+
+        const info = document.createElement("div");
+        info.className = "option-info";
+
+        info.innerHTML = `
+          <span class="option-name">${safe(option.name)}</span>
+          <span class="option-description">${safe(option.description)}</span>
+          <span class="option-price">
+            ${
+              optionPrice(option) === 0
+                ? "Geen meerprijs"
+                : "Circa / vanaf " + euro(optionPrice(option))
+            }
+          </span>
+        `;
+
+        label.appendChild(input);
+        label.appendChild(info);
+        section.appendChild(label);
+
+        /*
+          Het aantalveld staat direct onder "Ja".
+        */
+        if (
+          group.id === "cutouts" &&
+          index === 1 &&
+          input.checked
+        ) {
+          const numberBox = document.createElement("div");
+          numberBox.className = "number-box";
+
+          numberBox.innerHTML = `
+            <label for="cutoutCount">
+              Hoeveel uitsparingen moeten er gemaakt worden? *
+            </label>
+
+            <input
+              id="cutoutCount"
+              type="number"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              value="${cutoutCount}"
+              required
+            >
+          `;
+
+          const numberInput =
+            numberBox.querySelector("#cutoutCount");
+
+          numberInput.addEventListener("input", function() {
+            cutoutCount = Math.max(
+              1,
+              parseInt(this.value, 10) || 1
+            );
+
+            this.value = cutoutCount;
+
+            /*
+              Alleen het overzicht verversen.
+              Hierdoor blijft de keuze op mobiel open.
+            */
+            renderSummary();
+          });
+
+          section.appendChild(numberBox);
+        }
+
+        input.addEventListener("change", function() {
+          if (group.id === "existing" && input.checked) {
+            selected.system = null;
+            selected.doubleExtras = [];
+          }
+
+          if (group.id === "system" && input.checked) {
+            selected.existing = [];
+            selected.adjustments = [];
+          }
+
+          if (group.type === "checkbox") {
+            if (input.checked) {
+              if (!selected[group.id].includes(index)) {
+                selected[group.id].push(index);
+              }
+            } else {
+              selected[group.id] =
+                selected[group.id].filter(value => value !== index);
+
+              if (group.id === "existing") {
+                selected.adjustments = [];
+              }
+            }
+          } else {
+            selected[group.id] = index;
+
+            if (
+              group.id === "cutouts" &&
+              index === 0
+            ) {
+              cutoutCount = 1;
+            }
+          }
+
+          renderChoices();
+          renderSummary();
+        });
+      });
+
+      container.appendChild(section);
     });
-  });
-
-  return lines.join("\n");
-}
-
-function validateConfiguration(){
-  if(!existingChosen() && !systemChosen()){
-    return "Kies bestaande uitlaat aanpassen of een type uitlaatsysteem.";
   }
 
-  if(existingChosen() && selected.adjustments.length===0){
-    return "Kies minimaal één aanpassing aan de bestaande uitlaat.";
+  function renderSummary() {
+    const container = document.getElementById("summary");
+    let html = "";
+
+    CONFIG.groups.forEach(group => {
+      if (!isVisible(group)) {
+        return;
+      }
+
+      chosenOptions(group).forEach(option => {
+        html += `
+          <div class="summary-row">
+            <span>
+              ${safe(option.name)}
+
+              ${
+                option.perCutout
+                  ? `<span class="subrow">${cutoutCount} uitsparing(en)</span>`
+                  : ""
+              }
+            </span>
+
+            <span>
+              ${
+                optionPrice(option) === 0
+                  ? "€ 0,00"
+                  : "Vanaf " + euro(optionPrice(option))
+              }
+            </span>
+          </div>
+        `;
+      });
+    });
+
+    if (!html) {
+      html = "<p>Kies hierboven eerst een uitvoering.</p>";
+    }
+
+    container.innerHTML = html;
+    document.getElementById("totalPrice").textContent =
+      euro(total());
   }
 
-  if(systemChosen() && selected.diameter===null){
-    return "Kies een gewenste diameter.";
+  function configurationText() {
+    const lines = [];
+
+    CONFIG.groups.forEach(group => {
+      if (!isVisible(group)) {
+        return;
+      }
+
+      chosenOptions(group).forEach(option => {
+        lines.push(
+          `${group.title}: ${option.name} - circa/vanaf ${euro(optionPrice(option))}`
+        );
+
+        if (option.perCutout) {
+          lines.push(`Aantal uitsparingen: ${cutoutCount}`);
+        }
+      });
+    });
+
+    return lines.join("\n");
   }
 
-  if(systemChosen() && selected.cutouts===null){
-    return "Kies een optie bij uitsparingen.";
+  function validateConfiguration() {
+    if (!existingChosen() && !systemChosen()) {
+      return "Kies bestaande uitlaat aanpassen of een type uitlaatsysteem.";
+    }
+
+    if (
+      existingChosen() &&
+      selected.adjustments.length === 0
+    ) {
+      return "Kies minimaal één aanpassing aan de bestaande uitlaat.";
+    }
+
+    if (
+      systemChosen() &&
+      selected.diameter === null
+    ) {
+      return "Kies een gewenste diameter.";
+    }
+
+    if (
+      systemChosen() &&
+      selected.cutouts === null
+    ) {
+      return "Kies een optie bij uitsparingen.";
+    }
+
+    if (
+      systemChosen() &&
+      selected.sound === null
+    ) {
+      return "Kies een optie bij schakelen tussen geluid.";
+    }
+
+    if (
+      endDeleteChosen() &&
+      selected.cutouts === null
+    ) {
+      return "Kies bij einddemper delete een optie bij uitsparingen.";
+    }
+
+    if (
+      selected.cutouts === 1 &&
+      cutoutCount < 1
+    ) {
+      return "Vul minimaal één uitsparing in.";
+    }
+
+    return "";
   }
 
-  if(systemChosen() && selected.sound===null){
-    return "Kies een optie bij schakelen tussen geluid.";
-  }
+  document
+    .getElementById("quoteForm")
+    .addEventListener("submit", function(event) {
+      event.preventDefault();
 
-  if(endDeleteChosen() && selected.cutouts===null){
-    return "Kies bij einddemper delete een optie bij uitsparingen.";
-  }
+      const error = validateConfiguration();
 
-  if(selected.cutouts===1 && cutoutCount<1){
-    return "Vul minimaal één uitsparing in.";
-  }
+      if (error) {
+        alert(error);
+        return;
+      }
 
-  return "";
-}
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const license = document.getElementById("license").value.trim();
+      const comment = document.getElementById("comment").value.trim();
 
-document.getElementById("quoteForm").addEventListener("submit",event=>{
-  event.preventDefault();
+      const subject =
+        `Offerteaanvraag rvs-uitlaatopmaat.nl - ${name}`;
 
-  const error=validateConfiguration();
-
-  if(error){
-    alert(error);
-    return;
-  }
-
-  const name=document.getElementById("name").value.trim();
-  const email=document.getElementById("email").value.trim();
-  const phone=document.getElementById("phone").value.trim();
-  const car=document.getElementById("car").value.trim();
-  const year=document.getElementById("year").value.trim();
-  const license=document.getElementById("license").value.trim();
-  const comment=document.getElementById("comment").value.trim();
-
-  const subject=`Offerteaanvraag rvs-uitlaatopmaat.nl - ${name}`;
-
-  const body=`
+      const body = `
 Beste,
 
 Ik wil graag een offerte aanvragen.
@@ -1167,8 +1308,6 @@ GEGEVENS
 Naam: ${name}
 E-mailadres: ${email}
 Telefoonnummer: ${phone}
-Merk / model auto: ${car}
-Bouwjaar: ${year}
 Kenteken: ${license}
 
 GEKOZEN CONFIGURATIE
@@ -1188,53 +1327,51 @@ ${comment || "Geen aanvullende opmerking"}
 Met vriendelijke groet,
 
 ${name}
-`.trim();
+      `.trim();
 
-  const mailto=
-    `mailto:${CONFIG.email}`+
-    `?subject=${encodeURIComponent(subject)}`+
-    `&body=${encodeURIComponent(body)}`;
+      const mailto =
+        `mailto:${CONFIG.email}` +
+        `?subject=${encodeURIComponent(subject)}` +
+        `&body=${encodeURIComponent(body)}`;
 
-  const message=document.getElementById("message");
+      const message = document.getElementById("message");
 
-  /*
-    We tonen altijd een klikbare mailknop.
-    Dit is betrouwbaarder op mobiele telefoons dan
-    alleen window.location.href.
-  */
-  message.innerHTML=`
-    <p>Je configuratie is klaar.</p>
+      /*
+        Op mobiel wordt niet alleen automatisch geprobeerd
+        de mailapp te openen. Er blijft altijd een klikbare knop.
+      */
+      message.innerHTML = `
+        <p>Je configuratie is klaar.</p>
 
-    <a class="mail-link" href="${mailto}">
-      Open e-mail om offerte te versturen
-    </a>
+        <a class="mail-link" href="${mailto}">
+          Open e-mail om offerte te versturen
+        </a>
 
-    <br>
+        <br>
 
-    <a
-      class="contact-link"
-      href="${CONFIG.contactUrl}"
-      target="_top"
-    >
-      Naar contactformulier
-    </a>
+        <a
+          class="contact-link"
+          href="${CONFIG.contactUrl}"
+          target="_top"
+        >
+          Naar contactformulier
+        </a>
 
-    <p style="font-size:13px;color:#ccc;">
-      Werkt je e-mailknop niet? Gebruik dan het contactformulier
-      of mail rechtstreeks naar ${CONFIG.email}.
-    </p>
-  `;
+        <p style="font-size:13px;color:#ccc;">
+          Werkt de e-mailknop niet? Mail dan rechtstreeks naar
+          ${CONFIG.email}.
+        </p>
+      `;
 
-  /*
-    Probeert daarnaast automatisch de e-mailapp te openen.
-    De klikbare knop blijft altijd zichtbaar.
-  */
-  window.location.href=mailto;
-});
+      /*
+        Geen automatische window.location meer.
+        Daardoor blijft de pagina op mobiel zichtbaar.
+      */
+    });
 
-init();
-renderChoices();
-renderSummary();
+  init();
+  renderChoices();
+  renderSummary();
 </script>
 
 </body>
