@@ -7,76 +7,481 @@
 
 <style>
 :root{
-  --bg:#444;--dark:#1e1e1e;--card:#505050;--hover:#5a5a5a;
-  --selected:#303030;--border:#777;--white:#fff;--text:#eee;
-  --muted:#ccc;--green:#7bd957;--gold:#d2b27c;--warning:#3b3329;
+  --bg:#444;
+  --dark:#1e1e1e;
+  --card:#505050;
+  --hover:#5b5b5b;
+  --selected:#303030;
+  --border:#777;
+  --white:#fff;
+  --text:#eee;
+  --muted:#ccc;
+  --green:#7bd957;
+  --gold:#d2b27c;
+  --warning:#3b3329;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;line-height:1.5}
-.configurator{max-width:1180px;margin:auto;padding:25px 20px 70px}
-.header,.intro,.panel{border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 22px #0002}
-.header{display:flex;align-items:center;gap:25px;padding:18px 25px;margin-bottom:25px;background:var(--dark)}
-.logo{width:95px;height:95px;object-fit:contain;background:#000;border-radius:12px}
-.header h1{margin:0 0 6px;color:#fff;font-size:30px;font-weight:400}
-.header p{margin:0;color:var(--muted)}
-.intro{padding:35px 25px;margin-bottom:25px;background:var(--dark);text-align:center}
-.intro h2,.panel h2{color:#fff;font-weight:400}
-.intro h2{margin:0 0 12px;font-size:30px}
-.intro-text{max-width:850px;margin:auto}
-.warning{max-width:900px;margin:22px auto 0;padding:16px 18px;background:var(--warning);border:1px solid var(--gold);border-radius:12px;color:#fff1d6;font-size:14px;text-align:left}
-.warning strong{color:#f3cf8a}
-.benefits{display:flex;justify-content:center;flex-wrap:wrap;gap:10px 30px;margin-top:24px}
-.benefit:before{content:"✓";margin-right:7px;color:var(--green);font-weight:bold}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:25px;align-items:start}
-.panel{padding:28px;background:var(--bg)}
-.panel h2{margin:0 0 22px;font-size:26px}
-.group{margin-bottom:32px}
-.group h3{margin:0 0 5px;color:#fff;font-size:20px;font-weight:400}
-.group-help{margin:0 0 13px;color:var(--muted);font-size:14px}
-.option{display:flex;align-items:flex-start;gap:13px;padding:16px;margin:9px 0;background:var(--card);border:1px solid var(--border);border-radius:13px;cursor:pointer;transition:.2s}
-.option:hover{background:var(--hover);border-color:#aaa}
-.option:has(input:checked){background:var(--selected);border-color:var(--green);box-shadow:0 0 0 1px #7bd95740}
-.option:has(input:checked) .option-name{color:var(--green)}
-.option input{width:18px;height:18px;margin-top:3px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
-.option-info{flex:1}
-.option-name{display:block;color:#fff;font-weight:bold}
-.option-description{display:block;margin-top:4px;color:var(--muted);font-size:14px}
-.option-price{display:block;margin-top:7px;color:#fff;font-weight:bold}
-.number-box{margin:-2px 0 15px 31px;padding:14px;background:#202020;border:1px solid var(--border);border-radius:10px}
-.number-box label{display:block;margin-bottom:7px;color:#fff;font-weight:bold}
-.number-box input{width:110px;padding:10px;background:var(--bg);color:#fff;border:1px solid var(--border);border-radius:8px;font-size:16px}
-.summary{position:sticky;top:20px;background:var(--dark)}
-.summary-intro{margin:-12px 0 18px;color:var(--muted);font-size:14px}
-.summary-row{display:flex;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #666;font-size:14px}
-.summary-row span:last-child{white-space:nowrap;color:#fff}
-.subrow{display:block;color:var(--muted);font-size:12px}
-.total{display:flex;justify-content:space-between;gap:15px;margin-top:22px;padding-top:18px;border-top:2px solid #fff;color:#fff;font-size:20px;font-weight:bold}
-.total small{display:block;color:var(--gold);font-size:11px;font-weight:normal;text-align:right}
-.full{grid-column:1/-1}
-.info-columns,.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.info-box{padding:19px;background:var(--card);border:1px solid var(--border);border-radius:14px}
-.info-box h3{margin:0 0 10px;color:#fff;font-size:18px;font-weight:400}
-.info-box ul{margin:0;padding-left:20px;color:var(--muted);font-size:14px}
-.included h3:before{content:"✓";margin-right:7px;color:var(--green)}
-.not-included h3:before{content:"!";margin-right:8px;color:#e2a0a0}
-.field.full-width{grid-column:1/-1}
-.field label{display:block;margin-bottom:6px;color:#fff}
-.field input,.field textarea{width:100%;padding:13px;background:var(--dark);color:#fff;border:1px solid var(--border);border-radius:10px;font:inherit}
-.field textarea{min-height:115px;resize:vertical}
-.button{margin-top:22px;padding:14px 34px;border:0;border-radius:30px;background:#202020;color:#fff;font-size:17px;cursor:pointer}
-.button:hover{background:#111}
-#message{color:var(--green);font-weight:bold}
-.footer{margin-top:35px;padding-top:25px;border-top:1px solid #777;color:var(--muted);text-align:center;font-size:14px}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.summary{position:static}}
-@media(max-width:600px){.configurator{padding:15px 10px 45px}.header{padding:15px}.logo{width:75px;height:75px}.header h1{font-size:22px}.panel{padding:18px}.info-columns,.form-grid{grid-template-columns:1fr}.field.full-width{grid-column:auto}}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.5;
+}
+
+.configurator{
+  max-width:1180px;
+  margin:auto;
+  padding:20px;
+}
+
+.header,
+.intro,
+.panel{
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(0,0,0,.2);
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  padding:18px 24px;
+  margin-bottom:22px;
+  background:var(--dark);
+}
+
+.logo{
+  width:90px;
+  height:90px;
+  object-fit:contain;
+  background:#000;
+  border-radius:12px;
+}
+
+.header h1{
+  margin:0 0 5px;
+  color:#fff;
+  font-size:30px;
+  font-weight:400;
+}
+
+.header p{
+  margin:0;
+  color:var(--muted);
+}
+
+.intro{
+  padding:32px 22px;
+  margin-bottom:22px;
+  background:var(--dark);
+  text-align:center;
+}
+
+.intro h2{
+  margin:0 0 12px;
+  color:#fff;
+  font-size:30px;
+  font-weight:400;
+}
+
+.intro-text{
+  max-width:850px;
+  margin:auto;
+}
+
+.warning{
+  max-width:900px;
+  margin:20px auto 0;
+  padding:15px 17px;
+  background:var(--warning);
+  border:1px solid var(--gold);
+  border-radius:12px;
+  color:#fff1d6;
+  font-size:14px;
+  text-align:left;
+}
+
+.warning strong{
+  color:#f3cf8a;
+}
+
+.benefits{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 28px;
+  margin-top:22px;
+}
+
+.benefit:before{
+  content:"✓";
+  margin-right:7px;
+  color:var(--green);
+  font-weight:bold;
+}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 350px;
+  gap:22px;
+  align-items:start;
+}
+
+.panel{
+  padding:25px;
+  background:var(--bg);
+}
+
+.panel h2{
+  margin:0 0 22px;
+  color:#fff;
+  font-size:25px;
+  font-weight:400;
+}
+
+.group{
+  margin-bottom:30px;
+}
+
+.group h3{
+  margin:0 0 5px;
+  color:#fff;
+  font-size:20px;
+  font-weight:400;
+}
+
+.group-help{
+  margin:0 0 12px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.option{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:15px;
+  margin:8px 0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:13px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.option:hover{
+  background:var(--hover);
+  border-color:#aaa;
+}
+
+.option.selected{
+  background:var(--selected);
+  border-color:var(--green);
+  box-shadow:0 0 0 1px rgba(123,217,87,.25);
+}
+
+.option.selected .option-name{
+  color:var(--green);
+}
+
+.option input{
+  width:18px;
+  height:18px;
+  margin-top:3px;
+  accent-color:var(--green);
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.option-info{
+  flex:1;
+}
+
+.option-name{
+  display:block;
+  color:#fff;
+  font-weight:bold;
+}
+
+.option-description{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.option-price{
+  display:block;
+  margin-top:7px;
+  color:#fff;
+  font-weight:bold;
+}
+
+.number-box{
+  margin:10px 0 15px;
+  padding:15px;
+  background:#202020;
+  border:1px solid var(--green);
+  border-radius:10px;
+}
+
+.number-box label{
+  display:block;
+  margin-bottom:8px;
+  color:#fff;
+  font-weight:bold;
+}
+
+.number-box input{
+  width:120px;
+  height:45px;
+  padding:10px;
+  background:#444;
+  color:#fff;
+  border:1px solid var(--green);
+  border-radius:8px;
+  font-size:18px;
+}
+
+.summary{
+  position:sticky;
+  top:20px;
+  background:var(--dark);
+}
+
+.summary-intro{
+  margin:-10px 0 18px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:9px 0;
+  border-bottom:1px solid #666;
+  font-size:14px;
+}
+
+.summary-row span:last-child{
+  white-space:nowrap;
+  color:#fff;
+}
+
+.subrow{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.total{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:20px;
+  padding-top:17px;
+  border-top:2px solid #fff;
+  color:#fff;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.total small{
+  display:block;
+  color:var(--gold);
+  font-size:11px;
+  font-weight:normal;
+  text-align:right;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.info-columns,
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.info-box{
+  padding:18px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+.info-box h3{
+  margin:0 0 10px;
+  color:#fff;
+  font-size:18px;
+  font-weight:400;
+}
+
+.info-box ul{
+  margin:0;
+  padding-left:20px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.included h3:before{
+  content:"✓";
+  margin-right:7px;
+  color:var(--green);
+}
+
+.not-included h3:before{
+  content:"!";
+  margin-right:8px;
+  color:#e2a0a0;
+}
+
+.field.full-width{
+  grid-column:1/-1;
+}
+
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:#fff;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  padding:13px;
+  background:var(--dark);
+  color:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  font:inherit;
+}
+
+.field textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+.button,
+.mail-link,
+.contact-link{
+  display:inline-block;
+  margin-top:20px;
+  padding:13px 25px;
+  border-radius:25px;
+  text-decoration:none;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.button{
+  border:0;
+  background:#202020;
+  color:#fff;
+}
+
+.button:hover,
+.mail-link:hover{
+  background:#111;
+}
+
+.mail-link{
+  background:var(--green);
+  color:#172017;
+  font-weight:bold;
+}
+
+.contact-link{
+  background:#fff;
+  color:#333;
+}
+
+#message{
+  color:var(--green);
+  font-weight:bold;
+}
+
+.footer{
+  margin:30px 0;
+  padding-top:20px;
+  border-top:1px solid #777;
+  color:var(--muted);
+  text-align:center;
+  font-size:14px;
+}
+
+@media(max-width:850px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .summary{
+    position:static;
+  }
+}
+
+@media(max-width:600px){
+  .configurator{
+    padding:10px;
+  }
+
+  .header{
+    padding:15px;
+    gap:15px;
+  }
+
+  .logo{
+    width:70px;
+    height:70px;
+  }
+
+  .header h1{
+    font-size:21px;
+  }
+
+  .panel{
+    padding:17px;
+  }
+
+  .info-columns,
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full-width{
+    grid-column:auto;
+  }
+
+  .option{
+    padding:14px 12px;
+  }
+
+  .button,
+  .mail-link,
+  .contact-link{
+    width:100%;
+    text-align:center;
+  }
+}
 </style>
 </head>
 
 <body>
+
 <main class="configurator">
 
 <header class="header">
   <img src="logo.png" class="logo" alt="logo rvs-uitlaatopmaat.nl">
+
   <div>
     <h1>rvs-uitlaatopmaat.nl</h1>
     <p>Uw specialist in hoogwaardige RVS uitlaatsystemen</p>
@@ -85,16 +490,19 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
 <section class="intro">
   <h2>Stel uw RVS-uitlaatsysteem samen</h2>
+
   <p class="intro-text">
     Kies hieronder de gewenste uitvoering. Alle bedragen zijn circa- en
-    vanafprijzen. Na uw aanvraag nemen wij contact met u op voor een definitieve beoordeling.
+    vanafprijzen. Na uw aanvraag nemen wij contact met u op voor een
+    definitieve beoordeling.
   </p>
 
   <div class="warning">
     <strong>Let op:</strong>
-    Alle genoemde bedragen zijn circa- en vanafprijzen en vormen geen definitieve offerte.
-    Afbrekende bouten en moeren, flexibele delen en klemmen zijn niet inbegrepen.
-    Extra kosten hiervoor worden aan het einde van de klus berekend.
+    Alle genoemde bedragen zijn circa- en vanafprijzen en vormen geen
+    definitieve offerte. Afbrekende bouten en moeren, flexibele delen en
+    klemmen zijn niet inbegrepen. Eventuele extra kosten worden aan het
+    einde van de klus berekend.
   </div>
 
   <div class="benefits">
@@ -115,7 +523,10 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 <aside class="panel summary">
   <h2>Uw samenstelling</h2>
   <p class="summary-intro">Indicatie van uw gekozen uitvoering.</p>
-  <div id="summary"><p>Kies hierboven eerst een uitvoering.</p></div>
+
+  <div id="summary">
+    <p>Kies hierboven eerst een uitvoering.</p>
+  </div>
 
   <div class="total">
     <span>Indicatief totaal</span>
@@ -158,7 +569,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
   <h2>Offerte aanvragen</h2>
 
   <p>
-    Uw configuratie wordt automatisch meegestuurd naar
+    Vul hieronder uw gegevens in. De configuratie wordt meegestuurd naar
     <strong>info@rvs-uitlaatopmaat.nl</strong>.
   </p>
 
@@ -173,12 +584,12 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
       <div class="field">
         <label for="name">Naam *</label>
-        <input id="name" required autocomplete="name">
+        <input id="name" type="text" required autocomplete="name">
       </div>
 
       <div class="field">
         <label for="email">E-mailadres *</label>
-        <input type="email" id="email" required autocomplete="email">
+        <input id="email" type="email" required autocomplete="email">
       </div>
 
       <div class="field">
@@ -188,7 +599,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
       <div class="field">
         <label for="car">Merk / model auto *</label>
-        <input id="car" required placeholder="Bijvoorbeeld BMW 335i">
+        <input id="car" type="text" required placeholder="Bijvoorbeeld BMW 335i">
       </div>
 
       <div class="field">
@@ -198,7 +609,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
       <div class="field">
         <label for="license">Kenteken *</label>
-        <input id="license" required placeholder="Bijvoorbeeld AB-12-CD">
+        <input id="license" type="text" required placeholder="Bijvoorbeeld AB-12-CD">
       </div>
 
       <div class="field full-width">
@@ -208,8 +619,11 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 
     </div>
 
-    <button class="button" type="submit">Offerte aanvragen</button>
-    <p id="message"></p>
+    <button class="button" type="submit">
+      Offerte aanvragen
+    </button>
+
+    <div id="message"></div>
   </form>
 </section>
 
@@ -224,29 +638,33 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-seri
 <script>
 const CONFIG = {
   email: "info@rvs-uitlaatopmaat.nl",
-  currency: "EUR",
+
+  /*
+    Vul hier eventueel de echte URL van je JouwWeb-contactformulier in.
+  */
+  contactUrl: "https://www.rvs-uitlaatopmaat.nl/contact",
 
   groups: [
     {
-      id: "existing",
-      title: "Bestaande uitlaat",
-      help: "Vink dit aan wanneer de bestaande uitlaat aangepast moet worden.",
-      type: "checkbox",
-      options: [
+      id:"existing",
+      title:"Bestaande uitlaat",
+      help:"Vink dit aan wanneer de bestaande uitlaat aangepast moet worden.",
+      type:"checkbox",
+      options:[
         {
-          name: "Bestaande uitlaat aanpassen",
-          description: "De bestaande uitlaat moet worden aangepast.",
-          price: 0
+          name:"Bestaande uitlaat aanpassen",
+          description:"De bestaande uitlaat moet worden aangepast.",
+          price:0
         }
       ]
     },
 
     {
-      id: "system",
-      title: "Type uitlaatsysteem",
-      help: "Kies een type. Deze groep verdwijnt bij bestaande uitlaat aanpassen.",
-      type: "radio",
-      options: [
+      id:"system",
+      title:"Type uitlaatsysteem",
+      help:"Kies een type uitlaatsysteem. Deze keuze verdwijnt bij bestaande uitlaat aanpassen.",
+      type:"radio",
+      options:[
         {name:"Enkel",description:"Enkel uitlaatsysteem.",price:1050},
         {name:"Enkel dubbel",description:"Van enkel naar een dubbele uitvoering.",price:1450},
         {name:"Dubbel dubbel",description:"Dubbele uitvoering met dubbele einddempers.",price:1850},
@@ -260,24 +678,32 @@ const CONFIG = {
     },
 
     {
-      id: "doubleExtras",
-      title: "Extra opties bij dubbel dubbel",
-      help: "Beschikbaar wanneer dubbel dubbel is gekozen.",
-      type: "checkbox",
-      visibleWhen: {group:"system", option:2},
-      options: [
-        {name:"X-pipe toevoegen",description:"X-pipe voor dubbel dubbel.",price:650},
-        {name:"Twee kleppendempers installeren",description:"Automatisch twee kleppendempers.",price:1500}
+      id:"doubleExtras",
+      title:"Extra opties bij dubbel dubbel",
+      help:"Beschikbaar wanneer dubbel dubbel is gekozen.",
+      type:"checkbox",
+      visibleWhen:{group:"system",option:2},
+      options:[
+        {
+          name:"X-pipe toevoegen",
+          description:"X-pipe voor dubbel dubbel.",
+          price:650
+        },
+        {
+          name:"Twee kleppendempers installeren",
+          description:"Automatisch twee kleppendempers.",
+          price:1500
+        }
       ]
     },
 
     {
-      id: "adjustments",
-      title: "Aanpassingen aan bestaande uitlaat",
-      help: "U kunt één of meerdere aanpassingen selecteren.",
-      type: "checkbox",
-      visibleWhen: {group:"existing", option:0},
-      options: [
+      id:"adjustments",
+      title:"Aanpassingen aan bestaande uitlaat",
+      help:"U kunt één of meerdere aanpassingen selecteren.",
+      type:"checkbox",
+      visibleWhen:{group:"existing",option:0},
+      options:[
         {name:"Enkele cut-out bestaand",description:"Aanpassing met één bestaande cut-out.",price:550},
         {name:"Dubbele cut-out bestaand",description:"Aanpassing met een dubbele cut-out.",price:930},
         {name:"Klepdemper installeren",description:"Installatie van één klepdemper.",price:750},
@@ -292,11 +718,11 @@ const CONFIG = {
     },
 
     {
-      id: "diameter",
-      title: "Gewenste diameter",
-      help: "Indien u de diameter niet weet, kies dan de middelste optie.",
-      type: "radio",
-      options: [
+      id:"diameter",
+      title:"Gewenste diameter",
+      help:"Indien u de diameter niet weet, kies dan de middelste optie.",
+      type:"radio",
+      options:[
         {name:"2 inch of kleiner (50,8 mm)",description:"Meerprijs circa/vanaf €85.",price:85},
         {name:"2,25 inch (57 mm) tot 2,5 inch (63,5 mm)",description:"Meerprijs circa/vanaf €105.",price:105},
         {name:"2,75 inch (70 mm) tot 3 inch (76,2 mm)",description:"Meerprijs circa/vanaf €200.",price:200}
@@ -304,24 +730,41 @@ const CONFIG = {
     },
 
     {
-      id: "cutouts",
-      title: "Uitsparingen",
-      help: "Moeten er aanpassingen of uitsparingen worden gemaakt?",
-      type: "radio",
-      options: [
-        {name:"Nee, de bestaande uitsparing is geschikt",description:"Geen extra uitsparingen nodig.",price:0},
-        {name:"Ja, er moeten uitsparingen gemaakt worden",description:"€95 per uitsparing.",price:95,perCutout:true}
+      id:"cutouts",
+      title:"Uitsparingen",
+      help:"Moeten er aanpassingen of uitsparingen worden gemaakt?",
+      type:"radio",
+      options:[
+        {
+          name:"Nee, de bestaande uitsparing is geschikt",
+          description:"Er hoeven geen extra uitsparingen gemaakt te worden.",
+          price:0
+        },
+        {
+          name:"Ja, er moeten uitsparingen gemaakt worden",
+          description:"€95 per uitsparing.",
+          price:95,
+          perCutout:true
+        }
       ]
     },
 
     {
-      id: "sound",
-      title: "Schakelen tussen geluid",
-      help: "Wilt u kunnen schakelen tussen sportief en rustig geluid?",
-      type: "radio",
-      options: [
-        {name:"Ja, ik wil kunnen schakelen tussen sportief en rustig geluid",description:"Vanaf €380 per demper.",price:380},
-        {name:"Nee, ik wil niet kunnen schakelen tussen sportief en rustig geluid",description:"Geen kleppenbesturing.",price:0}
+      id:"sound",
+      title:"Schakelen tussen geluid",
+      help:"Wilt u kunnen schakelen tussen sportief en rustig geluid?",
+      type:"radio",
+      options:[
+        {
+          name:"Ja, ik wil kunnen schakelen tussen sportief en rustig geluid",
+          description:"Meerprijs circa/vanaf €380 per demper.",
+          price:380
+        },
+        {
+          name:"Nee, ik wil niet kunnen schakelen tussen sportief en rustig geluid",
+          description:"Geen kleppenbesturing.",
+          price:0
+        }
       ]
     }
   ]
@@ -331,16 +774,25 @@ let selected = {};
 let cutoutCount = 1;
 
 function euro(value){
-  return Number(value).toLocaleString("nl-NL",{style:"currency",currency:CONFIG.currency});
+  return Number(value).toLocaleString("nl-NL",{
+    style:"currency",
+    currency:"EUR"
+  });
 }
 
-function group(id){
-  return CONFIG.groups.find(item=>item.id===id);
+function safe(value){
+  const div=document.createElement("div");
+  div.textContent=value || "";
+  return div.innerHTML;
+}
+
+function getGroup(id){
+  return CONFIG.groups.find(group=>group.id===id);
 }
 
 function init(){
-  CONFIG.groups.forEach(item=>{
-    selected[item.id]=item.type==="checkbox"?[]:null;
+  CONFIG.groups.forEach(group=>{
+    selected[group.id]=group.type==="checkbox" ? [] : null;
   });
 }
 
@@ -357,196 +809,297 @@ function adjustmentChosen(){
 }
 
 function endDeleteChosen(){
-  return selected.adjustments.some(index=>group("adjustments").options[index]?.endDelete);
+  return selected.adjustments.some(index=>{
+    return getGroup("adjustments").options[index]?.endDelete === true;
+  });
 }
 
 function optionPrice(option){
   return option.perCutout
-    ? Number(option.price)*cutoutCount
-    : Number(option.price)||0;
+    ? Number(option.price) * cutoutCount
+    : Number(option.price) || 0;
 }
 
-function visible(item){
-  /* Belangrijk: bestaande uitlaat verbergt type uitlaatsysteem. */
-  if(item.id==="system") return !existingChosen();
+function isVisible(group){
+  /*
+    De groep bestaande uitlaat blijft zichtbaar.
+    Type uitlaatsysteem verdwijnt zodra bestaande uitlaat
+    wordt gekozen.
+  */
+  if(group.id==="existing"){
+    return true;
+  }
 
-  if(item.id==="existing") return true;
+  if(group.id==="system"){
+    return !existingChosen();
+  }
 
-  if(item.id==="adjustments") return existingChosen();
+  if(group.id==="adjustments"){
+    return existingChosen();
+  }
 
-  if(item.id==="doubleExtras") return selected.system===2;
+  if(group.id==="doubleExtras"){
+    return selected.system===2;
+  }
 
-  if(adjustmentChosen() && item.id==="diameter") return false;
-
-  if(adjustmentChosen() && item.id==="sound") return false;
-
-  if(adjustmentChosen() && item.id==="cutouts" && !endDeleteChosen()){
+  if(adjustmentChosen() && group.id==="diameter"){
     return false;
   }
 
-  if(["diameter","cutouts","sound"].includes(item.id)){
+  if(adjustmentChosen() && group.id==="sound"){
+    return false;
+  }
+
+  if(
+    adjustmentChosen() &&
+    group.id==="cutouts" &&
+    !endDeleteChosen()
+  ){
+    return false;
+  }
+
+  if(["diameter","cutouts","sound"].includes(group.id)){
     return systemChosen() || endDeleteChosen();
   }
 
-  if(item.visibleWhen){
-    const value=selected[item.visibleWhen.group];
-    return Array.isArray(value)
-      ? value.includes(item.visibleWhen.option)
-      : value===item.visibleWhen.option;
+  if(group.visibleWhen){
+    const value=selected[group.visibleWhen.group];
+
+    if(Array.isArray(value)){
+      return value.includes(group.visibleWhen.option);
+    }
+
+    return value===group.visibleWhen.option;
   }
 
   return true;
 }
 
-function chosenOptions(item){
-  if(item.type==="checkbox"){
-    return selected[item.id].map(index=>item.options[index]).filter(Boolean);
+function chosenOptions(group){
+  if(group.type==="checkbox"){
+    return selected[group.id]
+      .map(index=>group.options[index])
+      .filter(Boolean);
   }
 
-  const option=item.options[selected[item.id]];
-  return option?[option]:[];
+  const option=group.options[selected[group.id]];
+  return option ? [option] : [];
 }
 
 function total(){
   let amount=0;
 
-  CONFIG.groups.forEach(item=>{
-    if(visible(item)){
-      chosenOptions(item).forEach(option=>amount+=optionPrice(option));
-    }
+  CONFIG.groups.forEach(group=>{
+    if(!isVisible(group)) return;
+
+    chosenOptions(group).forEach(option=>{
+      amount+=optionPrice(option);
+    });
   });
 
   return amount;
+}
+
+function updateSelectedClasses(){
+  document.querySelectorAll("#choices .option").forEach(label=>{
+    const input=label.querySelector("input");
+
+    if(input && input.checked){
+      label.classList.add("selected");
+    }else{
+      label.classList.remove("selected");
+    }
+  });
 }
 
 function renderChoices(){
   const container=document.getElementById("choices");
   container.innerHTML="";
 
-  CONFIG.groups.forEach(item=>{
-    if(!visible(item)) return;
+  CONFIG.groups.forEach(group=>{
+    if(!isVisible(group)) return;
 
     const section=document.createElement("section");
     section.className="group";
+
     section.innerHTML=`
-      <h3>${safe(item.title)}</h3>
-      <p class="group-help">${safe(item.help)}</p>
+      <h3>${safe(group.title)}</h3>
+      <p class="group-help">${safe(group.help)}</p>
     `;
 
-    item.options.forEach((option,index)=>{
+    group.options.forEach((option,index)=>{
       const label=document.createElement("label");
       label.className="option";
 
       const input=document.createElement("input");
-      input.type=item.type;
-      input.name=item.type==="radio"?item.id:`${item.id}-${index}`;
-      input.checked=item.type==="checkbox"
-        ? selected[item.id].includes(index)
-        : selected[item.id]===index;
+      input.type=group.type;
+      input.name=group.type==="radio"
+        ? group.id
+        : `${group.id}-${index}`;
+
+      input.checked=group.type==="checkbox"
+        ? selected[group.id].includes(index)
+        : selected[group.id]===index;
 
       const info=document.createElement("div");
       info.className="option-info";
+
       info.innerHTML=`
         <span class="option-name">${safe(option.name)}</span>
         <span class="option-description">${safe(option.description)}</span>
         <span class="option-price">
-          ${optionPrice(option)===0?"Geen meerprijs":"Circa / vanaf "+euro(optionPrice(option))}
+          ${
+            optionPrice(option)===0
+              ? "Geen meerprijs"
+              : "Circa / vanaf " + euro(optionPrice(option))
+          }
         </span>
       `;
 
       label.append(input,info);
       section.appendChild(label);
 
-      input.addEventListener("change",()=>{
-        if(item.id==="existing" && input.checked){
-          selected.system=null;
-          selected.doubleExtras=[];
-        }
-
-        if(item.id==="system" && input.checked){
-          selected.existing=[];
-          selected.adjustments=[];
-        }
-
-        if(item.type==="checkbox"){
-          if(input.checked){
-            if(!selected[item.id].includes(index)){
-              selected[item.id].push(index);
-            }
-          }else{
-            selected[item.id]=selected[item.id].filter(value=>value!==index);
-            if(item.id==="existing") selected.adjustments=[];
-          }
-        }else{
-          selected[item.id]=index;
-          if(item.id==="cutouts" && index===0) cutoutCount=1;
-        }
-
-        renderChoices();
-        renderSummary();
-      });
-
-      if(item.id==="cutouts" && index===1 && input.checked){
+      /*
+        Alleen bij de optie "Ja" wordt het aantalveld toegevoegd.
+      */
+      if(
+        group.id==="cutouts" &&
+        index===1 &&
+        input.checked
+      ){
         const box=document.createElement("div");
         box.className="number-box";
+
         box.innerHTML=`
-          <label for="cutoutCount">Hoeveel uitsparingen moeten er gemaakt worden? *</label>
-          <input id="cutoutCount" type="number" min="1" value="${cutoutCount}" required>
+          <label for="cutoutCount">
+            Hoeveel uitsparingen moeten er gemaakt worden? *
+          </label>
+
+          <input
+            id="cutoutCount"
+            type="number"
+            min="1"
+            step="1"
+            inputmode="numeric"
+            value="${cutoutCount}"
+            required
+          >
         `;
 
+        /*
+          Belangrijk: bij het aanpassen van het aantal
+          wordt alleen de prijs bijgewerkt. De keuzes blijven staan.
+        */
         box.querySelector("input").addEventListener("input",event=>{
-          cutoutCount=Math.max(1,parseInt(event.target.value,10)||1);
+          cutoutCount=Math.max(
+            1,
+            parseInt(event.target.value,10) || 1
+          );
+
           event.target.value=cutoutCount;
-          renderChoices();
           renderSummary();
         });
 
         section.appendChild(box);
       }
+
+      input.addEventListener("change",()=>{
+        if(group.id==="existing" && input.checked){
+          selected.system=null;
+          selected.doubleExtras=[];
+        }
+
+        if(group.id==="system" && input.checked){
+          selected.existing=[];
+          selected.adjustments=[];
+        }
+
+        if(group.type==="checkbox"){
+          if(input.checked){
+            if(!selected[group.id].includes(index)){
+              selected[group.id].push(index);
+            }
+          }else{
+            selected[group.id]=selected[group.id]
+              .filter(value=>value!==index);
+
+            if(group.id==="existing"){
+              selected.adjustments=[];
+            }
+          }
+        }else{
+          selected[group.id]=index;
+
+          if(group.id==="cutouts" && index===0){
+            cutoutCount=1;
+          }
+        }
+
+        renderChoices();
+        renderSummary();
+      });
     });
 
     container.appendChild(section);
   });
-}
 
-function safe(value){
-  const div=document.createElement("div");
-  div.textContent=value||"";
-  return div.innerHTML;
+  updateSelectedClasses();
 }
 
 function renderSummary(){
+  const container=document.getElementById("summary");
   let html="";
 
-  CONFIG.groups.forEach(item=>{
-    if(!visible(item)) return;
+  CONFIG.groups.forEach(group=>{
+    if(!isVisible(group)) return;
 
-    chosenOptions(item).forEach(option=>{
+    chosenOptions(group).forEach(option=>{
       html+=`
         <div class="summary-row">
           <span>
             ${safe(option.name)}
-            ${option.perCutout?`<span class="subrow">${cutoutCount} uitsparing(en)</span>`:""}
+
+            ${
+              option.perCutout
+                ? `<span class="subrow">${cutoutCount} uitsparing(en)</span>`
+                : ""
+            }
           </span>
-          <span>${optionPrice(option)===0?"€ 0,00":"Vanaf "+euro(optionPrice(option))}</span>
+
+          <span>
+            ${
+              optionPrice(option)===0
+                ? "€ 0,00"
+                : "Vanaf " + euro(optionPrice(option))
+            }
+          </span>
         </div>
       `;
     });
   });
 
-  document.getElementById("summary").innerHTML=html||"<p>Kies hierboven eerst een uitvoering.</p>";
+  if(!html){
+    html="<p>Kies hierboven eerst een uitvoering.</p>";
+  }
+
+  container.innerHTML=html;
   document.getElementById("totalPrice").textContent=euro(total());
 }
 
 function configurationText(){
   const lines=[];
 
-  CONFIG.groups.forEach(item=>{
-    if(!visible(item)) return;
+  CONFIG.groups.forEach(group=>{
+    if(!isVisible(group)) return;
 
-    chosenOptions(item).forEach(option=>{
-      lines.push(`${item.title}: ${option.name} - circa/vanaf ${euro(optionPrice(option))}`);
-      if(option.perCutout) lines.push(`Aantal uitsparingen: ${cutoutCount}`);
+    chosenOptions(group).forEach(option=>{
+      lines.push(
+        `${group.title}: ${option.name} - circa/vanaf ${euro(optionPrice(option))}`
+      );
+
+      if(option.perCutout){
+        lines.push(`Aantal uitsparingen: ${cutoutCount}`);
+      }
     });
   });
 
@@ -554,31 +1107,31 @@ function configurationText(){
 }
 
 function validateConfiguration(){
-  if(!existingChosen()&&!systemChosen()){
+  if(!existingChosen() && !systemChosen()){
     return "Kies bestaande uitlaat aanpassen of een type uitlaatsysteem.";
   }
 
-  if(existingChosen()&&selected.adjustments.length===0){
+  if(existingChosen() && selected.adjustments.length===0){
     return "Kies minimaal één aanpassing aan de bestaande uitlaat.";
   }
 
-  if(systemChosen()&&selected.diameter===null){
+  if(systemChosen() && selected.diameter===null){
     return "Kies een gewenste diameter.";
   }
 
-  if(systemChosen()&&selected.cutouts===null){
+  if(systemChosen() && selected.cutouts===null){
     return "Kies een optie bij uitsparingen.";
   }
 
-  if(systemChosen()&&selected.sound===null){
+  if(systemChosen() && selected.sound===null){
     return "Kies een optie bij schakelen tussen geluid.";
   }
 
-  if(endDeleteChosen()&&selected.cutouts===null){
+  if(endDeleteChosen() && selected.cutouts===null){
     return "Kies bij einddemper delete een optie bij uitsparingen.";
   }
 
-  if(selected.cutouts===1&&cutoutCount<1){
+  if(selected.cutouts===1 && cutoutCount<1){
     return "Vul minimaal één uitsparing in.";
   }
 
@@ -589,7 +1142,11 @@ document.getElementById("quoteForm").addEventListener("submit",event=>{
   event.preventDefault();
 
   const error=validateConfiguration();
-  if(error){alert(error);return}
+
+  if(error){
+    alert(error);
+    return;
+  }
 
   const name=document.getElementById("name").value.trim();
   const email=document.getElementById("email").value.trim();
@@ -626,15 +1183,53 @@ Afbrekende bouten en moeren, flexibele delen en klemmen zijn niet inbegrepen.
 Eventuele extra kosten worden aan het einde van de klus berekend.
 
 OPMERKING
-${comment||"Geen aanvullende opmerking"}
+${comment || "Geen aanvullende opmerking"}
 
 Met vriendelijke groet,
 
 ${name}
 `.trim();
 
-  location.href=`mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  document.getElementById("message").textContent="Uw e-mailprogramma wordt geopend...";
+  const mailto=
+    `mailto:${CONFIG.email}`+
+    `?subject=${encodeURIComponent(subject)}`+
+    `&body=${encodeURIComponent(body)}`;
+
+  const message=document.getElementById("message");
+
+  /*
+    We tonen altijd een klikbare mailknop.
+    Dit is betrouwbaarder op mobiele telefoons dan
+    alleen window.location.href.
+  */
+  message.innerHTML=`
+    <p>Je configuratie is klaar.</p>
+
+    <a class="mail-link" href="${mailto}">
+      Open e-mail om offerte te versturen
+    </a>
+
+    <br>
+
+    <a
+      class="contact-link"
+      href="${CONFIG.contactUrl}"
+      target="_top"
+    >
+      Naar contactformulier
+    </a>
+
+    <p style="font-size:13px;color:#ccc;">
+      Werkt je e-mailknop niet? Gebruik dan het contactformulier
+      of mail rechtstreeks naar ${CONFIG.email}.
+    </p>
+  `;
+
+  /*
+    Probeert daarnaast automatisch de e-mailapp te openen.
+    De klikbare knop blijft altijd zichtbaar.
+  */
+  window.location.href=mailto;
 });
 
 init();
